@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidhvath J Poojari - Backend & Cloud Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #1a1a2e;
+            --accent: #00d9ff;
+            --accent-secondary: #ff0080;
+            --accent-glow: rgba(0, 217, 255, 0.4);
+            --text: #ffffff;
+            --text-muted: #a0a0b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #ff0080;
+            bottom: -100px;
+            right: -100px;
+            animation-delay: 7s;
+        }
+
+        .orb3 {
+            width: 350px;
+            height: 350px;
+            background: #8000ff;
+            top: 50%;
+            left: 50%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            filter: blur(5px);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            animation: slideDown 0.5s ease;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:nth-child(1) { animation-delay: 0.2s; transform: translateY(50px); }
+        section:nth-child(2) { animation-delay: 0.4s; transform: translateY(50px); }
+        section:nth-child(3) { animation-delay: 0.6s; transform: translateY(50px); }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .profile-image-container {
+            position: relative;
+            animation: floatImage 3s ease-in-out infinite;
+        }
+
+        @keyframes floatImage {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .profile-image {
+            width: 280px;
+            height: 400px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 20px 60px var(--accent-glow);
+            transition: all 0.3s;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 30px 80px var(--accent-glow);
+        }
+
+        .profile-glow {
+            position: absolute;
+            inset: -20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 20px;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--accent), #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--accent-glow)); }
+            50% { filter: drop-shadow(0 0 40px var(--accent-glow)); }
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .typing-effect {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            min-height: 30px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-links a {
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .contact-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+            background: rgba(0, 217, 255, 0.2);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .experience-card {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            object-fit: contain;
+            background: white;
+            padding: 10px;
+            flex-shrink: 0;
+            border: 2px solid rgba(0, 217, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .company-logo:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+        }
+
+        .experience-content {
+            flex: 1;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .location {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .location::before {
+            content: '📍';
+        }
+
+        .date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .date::before {
+            content: '📅';
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--accent);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        ul {
+            margin-left: 1.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .skill-category:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-category:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .skill-category h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #ff0080);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .publications-grid, .certifications-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .pub-card, .cert-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pub-card::before {
+            content: '📄';
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+        .cert-card::before {
+            content: '🏆';
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+        .pub-card:hover, .cert-card:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 0 20px var(--accent-glow);
+            border-left-width: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero h2 { font-size: 1.5rem; }
+            nav ul { gap: 1rem; }
+            section { min-height: auto; }
+            .profile-section { flex-direction: column; }
+            .profile-image { width: 200px; height: 280px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .experience-card { flex-direction: column; }
+            .company-logo { width: 60px; height: 60px; }
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            z-index: 10000;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+    <div class="cursor-trail"></div>
+    
+    <div class="bg-animation">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="home" class="hero">
+            <div class="profile-section">
+                <div class="profile-image-container">
+                    <div class="profile-glow"></div>
+                    <!-- Replace 'YOUR_IMAGE_HERE.jpg' with your actual image filename -->
+                    <img src="images/138788842.jpeg" class="profile-image" alt="Vidhvath J Poojari">
+                </div>
+                <div class="hero-content">
+                    <h1>Vidhvath J Poojari</h1>
+                    <h2>Backend & Cloud Engineer</h2>
+                    <div class="typing-effect" id="typing"></div>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.8;">
+                        Building scalable systems, optimizing cloud costs, and contributing to open source. 
+                        Google Summer of Code contributor with a passion for automation and developer tooling.
+                    </p>
+                </div>
+            </div>
+            <div class="contact-links">
+                <a href="mailto:vidhvathj.2005@gmail.com">📧 Email</a>
+                <a href="https://linkedin.com/in/vidhvath-j" target="_blank">🔗 LinkedIn</a>
+                <a href="https://github.com/vidhvath28" target="_blank">💻 GitHub</a>
+                <a href="tel:+919036272250">📞 +91 9036272250</a>
+            </div>
+            <a href="#contact" class="cta-button">Get In Touch</a>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1300+</div>
+                    <div class="stat-label">Open Source Contributions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Organizations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">GSoC</div>
+                    <div class="stat-label">Contributor </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92 PR</div>
+                    <div class="stat-label">Hacktoberfest 2024</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="card">
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    I'm a Software Engineer with hands-on experience in <strong>backend automation</strong>, 
+                    <strong>cloud cost optimization</strong>, and <strong>large-scale open-source development</strong>. 
+                    I've contributed over <strong>1300+ commits</strong> across 15+ organizations and progressed from 
+                    GSoC contributor to mentor. Currently working at Yellow.ai, building AI-powered cloud cost analysis 
+                    systems and Grafana dashboards that drive measurable impact.
+                </p>
+                <p style="margin-top: 1.5rem; font-size: 1.1rem; padding-top: 1rem; border-top: 1px solid rgba(0, 217, 255, 0.1);">
+                    🎓 <strong>Education:</strong> Bachelor of Computer Applications (BCA) - Software Product Engineering<br>
+                    <span style="color: var(--text-muted); margin-left: 1.8rem;">RV University × Kalvium, Bangalore</span><br>
+                    <span style="color: var(--text-muted); margin-left: 1.8rem;">Expected Graduation: April 2027</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>Professional Experience</h2>
+            
+            <div class="card">
+                <div class="experience-card">
+                    <!-- Replace with actual Yellow.ai logo -->
+                    <img src="images/yellowdotai_logo.jpeg" alt="Yellow.ai" class="company-logo">
+                    <div class="experience-content">
+                        <h3>Software Engineer Intern</h3>
+                        <p class="company">Yellow.ai</p>
+                        <p class="location">Bengaluru, Karnataka, India · Remote</p>
+                        <p class="date">Dec 2024 – Present · 1 yr 1 mo</p>
+                        <ul>
+                            <li><strong>Multi-Cloud Cost Optimization:</strong> Developed automated cost analysis tools for AWS, Azure, and GCP, processing infrastructure spending data across multiple cloud platforms</li>
+                            <li><strong>Real-Time Monitoring Dashboards:</strong> Built comprehensive Grafana dashboards that provide finance and business teams with live visibility into cloud expenditure patterns and trends</li>
+                            <li><strong>AI-Powered Cost Intelligence:</strong> Created AI-driven assistants that analyze spending patterns, answer cost-related queries, and provide actionable optimization recommendations</li>
+                            <li><strong>Measurable Impact:</strong> Contributed directly to significant cloud cost reductions through automated alerting, anomaly detection, and resource optimization workflows</li>
+                            <li><strong>Cross-Functional Collaboration:</strong> Worked closely with engineering, finance, and business stakeholders to align cloud infrastructure usage with cost efficiency goals</li>
+                            <li><strong>Python Automation:</strong> Built robust automation scripts for continuous cost monitoring and reporting across cloud environments</li>
+                        </ul>
+                        <div class="skills-tags">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">AWS</span>
+                            <span class="skill-tag">Azure</span>
+                            <span class="skill-tag">Google Cloud</span>
+                            <span class="skill-tag">Grafana</span>
+                            <span class="skill-tag">AI/ML</span>
+                            <span class="skill-tag">Cost Optimization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="experience-card">
+                    <!-- Replace with actual Broadrange AI logo -->
+                    <img src="images/1685798552420.jpeg" alt="Broadrange AI" class="company-logo">
+                    <div class="experience-content">
+                        <h3>Project Intern</h3>
+                        <p class="company">Broadrange AI</p>
+                        <p class="location">Chicago, Illinois, United States · Remote</p>
+                        <p class="date">Sep 2024 – Dec 2024 · 4 mos</p>
+                        <ul>
+                            <li><strong>Graph Database Architecture:</strong> Designed and implemented a next-generation Library Management System leveraging Neo4j's graph database capabilities for complex relationship modeling</li>
+                            <li><strong>Full Development Lifecycle:</strong> Led the complete project from requirements gathering through development (3 months) to rigorous testing and deployment (1 month)</li>
+                            <li><strong>Production-Ready System:</strong> Delivered a fully functional, scalable system ready for enterprise deployment with comprehensive documentation</li>
+                            <li><strong>Global Team Collaboration:</strong> Coordinated with distributed teams across India and Chicago headquarters, participating in daily standups and sprint planning</li>
+                            <li><strong>Graph Data Modeling:</strong> Applied advanced graph modeling techniques to optimize query performance and represent complex library relationships (books, authors, borrowers, categories)</li>
+                            <li><strong>Performance Optimization:</strong> Implemented efficient Cypher queries and indexing strategies for sub-second response times even with large datasets</li>
+                        </ul>
+                        <div class="skills-tags">
+                            <span class="skill-tag">Neo4j</span>
+                            <span class="skill-tag">Graph Databases</span>
+                            <span class="skill-tag">Cypher</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">System Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="experience-card">
+                    <!-- Replace with actual NixOS logo -->
+                    <img src="images/images.png" alt="NixOS" class="company-logo">
+                    <div class="experience-content">
+                        <h3>Open Source Contributor</h3>
+                        <p class="company">Google Summer of Code 2024 · NixOS / Crystal2Nix</p>
+                        <p class="location">India · Hybrid</p>
+                        <p class="date">May 2024 – Sep 2024 · 5 mos</p>
+                        <ul>
+                            <li><strong>Version Control System Extension:</strong> Extended the Crystal2Nix tool from Git-only support to include Fossil and Mercurial version control systems, significantly expanding the tool's compatibility</li>
+                            <li><strong>Comprehensive Testing:</strong> Authored 38+ new unit test cases, improving code coverage and system stability for production deployment</li>
+                            <li><strong>New Language Mastery:</strong> Learned Crystal programming language from scratch while contributing to a production-ready open-source project</li>
+                            <li><strong>Open Source Best Practices:</strong> Followed industry-standard development workflows including code reviews, CI/CD integration, and comprehensive documentation</li>
+                            <li><strong>Global Collaboration:</strong> Worked with international maintainers across different time zones, participating in weekly sync meetings and code review sessions</li>
+                            <li><strong>Community Impact:</strong> Contributions enabled broader adoption of Crystal2Nix tool across different VCS ecosystems</li>
+                        </ul>
+                        <div class="skills-tags">
+                            <span class="skill-tag">Crystal</span>
+                            <span class="skill-tag">Ruby</span>
+                            <span class="skill-tag">Fossil</span>
+                            <span class="skill-tag">Mercurial</span>
+                            <span class="skill-tag">Testing</span>
+                            <span class="skill-tag">Open Source</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Additional Open Source Contributions</h3>
+                <ul style="margin-top: 1rem;">
+                    <li><strong>GirlScript Summer of Code</strong> - Open Source Developer (Oct 2024 - Nov 2024)</li>
+                    <li><strong>Hacktoberfest 2024</strong> - Completed with 92 contributions in 31 days across multiple repositories</li>
+                    <li><strong>SOCial Summer of Code 2025</strong> - Active contributor</li>
+                    <li><strong>Overall Impact:</strong> 1300+ contributions across 15+ major organizations
